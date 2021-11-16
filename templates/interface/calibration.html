@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+  <title>Calibracion sensores</title>
+  <style>
+    .resaltar{
+      background-color: yellow;
+      font-weight: bold;
+    }
+    .modo{
+      color: tomato;
+      font-weight: bold;
+    }
+  </style>
+{% endblock %}
+
+{% block container %}
+<div style="text-align: justify;">
+  <h2>CALIBRACION SENSORES DE HUMEDAD</h2>
+</div>
+<div id="calibracion_sensores">
+    <table-calibration :calibration_values="calibration_values"></table-calibration>
+ 
+</div>
+<script src="/static/js/calibration.js">
+
+</script>
+
+
+{% endblock %}
