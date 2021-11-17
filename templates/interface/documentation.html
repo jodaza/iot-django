@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+  <title>API documentation</title>
+  <style>
+    .resaltar{
+      background-color: yellow;
+      font-weight: bold;
+    }
+    .modo{
+      color: tomato;
+      font-weight: bold;
+    }
+  </style>
+{% endblock %}
+
+{% block container %}
+<div style="text-align: justify;">
+  <h2>GENERALIDADES DEL PROYECTO</h2>
+  <p>
+    Se necesita registrar los valores de las variables que afectan un entorno y controlarlas, para asi, crear un entorno artificial, para asegurar la supervivencia de especies y maximizar la producción de cultivos.
+    <br> se necesitara tomar datos de <b>7 sensores</b> y controlar <b>2 accionadores</b> (riego y luz).
+    <br> El sistema  consta de dos partes: el <span class="resaltar">dispositivo</span> y el <span class="resaltar">servidor</span>. 
+    <br> <span class="resaltar">El dispositivo</span> se encarga de <b>leer los datos de los sensores, y enviarselos al servidor</b>, 
+    aqui tambien se guardan los <b>intervalos y parametros que permiten controlar los 2 accionadores</b> conectados al dispositivo.
+    <br> 
+    <span class="resaltar">El servidor</span> se encargara de recibir los datos provenientes del <span class="resaltar">dispositivo</span> y los guardara en una <b>base de datos</b>.
+    En la base de datos tambien se guardaran los datos para controlar el dispositivo, estos son los que deberan ser cambiados si se quiere cambiarlos en el dispositivo.
+    <br><B>Entonces el funcionamiento basico del control es:</B> cuando el dispositivo se comunica con el servidor, este le envia datos como <span style="color:tomato">el modo y el estado de cada accionador</span>
+    y el servidor los comparara con los que hay en la base de datos, si son diferentes, se lo hara saber al dispositivo.
+  </p>
+</div>
+<h2>BASE DE DATOS FUNCIONAMIENTO</h2>
+<img src="" alt="imagen del admin.">
+<div style="text-align: justify;">
+  <p>
+    En la interfaz de <b><a href="https://agrower-299616.uc.r.appspot.com/admin/" target="_blank" >/admin</a></b>  se puede acceder, modificar, agregar y eliminar valores guardados en la base de datos. Como se puede ver en este proyecto existen 4 grupos de tablas las cuales se explicara su funcionamiento a continuación:
+    <ul>
+      <li>    Las tablas  <span class="resaltar">AUTHENTICATION AND AUTHORIZATION</span>    sirven para gestionar el sistema de usuarios,
+               agregando, eliminando y modificando permisos de diferentes usuarios. <i>pruebe agregar un usuario nuevo</i> <b><a href="https://agrower-299616.uc.r.appspot.com/admin/auth/user/" target="_blank">/users</a></b></li>
+      <li>    La tabla <b> <a href="https://agrower-299616.uc.r.appspot.com/admin/authtoken/tokenproxy/" target="_blank">/Tokens</a></b>  de <span class="resaltar">AUTH TOKEN</span>   sirve para administrar los tokens de acceso para los usuarios, cada usuario solo puede tener un token. </li>
+      <li>    Las tablas de <span class="resaltar">CONTROL</span>   son las encargadas de manejar todo el apartado de automatización del sistema. 
+              En las tablas  <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/automatic_mode/" target="_blank">/Automatic_mode</a></b> <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_riego/" target="_blank">/Timer_mode_riego</a></b> <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_luz/" target="_blank">/Timer_mode_luz</a></b>	  
+              se guardan los intervalos de funcionamiento de los Modos automático y programado (se explicaran mas adelante).  
+              En la tabla <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank">/value_change</a></b>  se guardan diferentes  configuraciones de control para los dos accionadores del sistema.
+              </li>
+      <li>    En las tablas <span class="resaltar">GET_SENSOR_VALUES</span> se guardan los valores de los sensores transmitidos desde el dispotitivo,
+              en <a href="https://agrower-299616.uc.r.appspot.com/admin/get_sensor_values/valores_sensores/" target="_blank"><b>/valores_sensores</b></a> se guardan todos los valores de cada comunicacion entre dispositivo/servidor. En 
+              <b><a href="https://agrower-299616.uc.r.appspot.com/admin/get_sensor_values/valores_sensores_hora/" target="_blank">/valores_sensores_hora</a></b> se guardaran los datos relevantes para cada hora de uso.
+      </li>
+    </ul>
+  </p>
+  <h2>GENERACION DE TOKENS:</h2>
+  <br>
+  <p>http https://agrower-299616.uc.r.appspot.com/api_generate_token/ username="daniel" password="electronica"</p>
+  <br>
+  <h2>CONTROL FUNCIONAMIENTO BASICO</h2>
+  <p>
+    El control se refiere al control y automatizacion de los dos accionadores del sistema. El riego y la iluminacion.
+    Estos van a funcionar en diferentes <b><span class="modo">Modos:</span></b>
+    <ol>
+      <li><span class="modo">Modo Programado:</span> Este modo funciona similar a un timer, en el dispositivo se guardaran intervalos de  tiempo
+          <span class="modo">%HH:%MM</span> entre los cuales el accionador estara encendido.
+          En la <b>DB</b>  estos intervalos de tiempo estan guardados en: <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_riego/" target="_blank">/Timer_mode_riego</a></b> <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_luz/" target="_blank">/Timer_mode_luz</a></b></li>
+      <li><span class="modo">Modo Manual:</span> En este modo el accionador solo tendra dos unicos estados: <b>(encendido/apagado)</b> <i>(1/0)</i>.
+      En la <b>DB</b> esto se podra cambiar aqui: <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank">/value_change</a></b> 
+      <li><span class="modo">Modo Automatico:</span> En este modo el encendido del accionador dependera de los valores actuales de los sensores.
+        Cada sensor tendra un un rango de valores que le llamaremos <span style="color:  rgb(255, 0, 0);">parametros</span>, cuando el valore actual del sensor se salga de su 
+        <span style="color: rgb(255, 0, 0);">parametro</span>, se activara el accionador por <b>x tiempo</b>.
+        En la <b>DB</b> esto se podra cambiar aqui:  <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/automatic_mode/" target="_blank">/Automatic_mode</a></b> </li>
+    </ol>
+  </p>
+</div>
+
+
+
+
+
+<h2>FUNCIONAMIENTO BASICO DE LA APP</h2>
+
+<p>El <span class="resaltar">dispositivo</span> se comunica a traves de un protocolo HTTP con el <span class="resaltar">servidor</span></p>
+<p style="color: gray; font-size: 4;"><i>link real: http POST https://agrower-299616.uc.r.appspot.com/gets/80/25/70/70/70/70/1200/1/1/0/0/ "Authorization: Token f4daf4d845dd4f40ca548b57535b44e755745daa" </i></p>
+<p style="color:green"> gets / humedad aire / temperatura / humedasuelo 1 / humedasuelo 2 / humedasuelo 3/ humedasuelo 4/ sensor luz/ Modo del riego/ Modo de la luz/ Estado del riego/ Estado de la luz/ </p>
+<p>El <span class="resaltar">dispositivo</span> manda este <b>REQUEST</b>, y el <span class="resaltar">servidor</span> guarda estos datos, los compara con los guardados en la <b>DB</b> y manda un <b>RESPONSE</b>.</p>
+<p>los siguientes valores se guardaran en la DB en la tabla <a href="https://agrower-299616.uc.r.appspot.com/admin/get_sensor_values/valores_sensores/" target="_blank"><b>/valores_sensores</b></a> 
+y en <b><a href="https://agrower-299616.uc.r.appspot.com/admin/get_sensor_values/valores_sensores_hora/" target="_blank">/valores_sensores_hora</a></b></p>
+<ul style="color: green;">
+  <li>humedad aire </li>
+  <li>temperatura</li>
+  <li>humedasuelo 1</li>
+  <li>humedasuelo 1</li>
+  <li>humedasuelo 1</li>
+  <li>humedasuelo 1</li>
+  <li>intesidad luz</li>
+  <li>Estado riego <i>( 1 si esta prendido, 0 si esta apagado)</i></li>
+  <li>Estado luz <i>( 1 si esta prendido, 0 si esta apagado)</i></li>
+</ul>
+<p>Ahora que los datos estan guardados, el servidor comparara los siguientes datos, con los guardados en la tabla <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank">/value_change</a></b> </p>
+<p style="color:green">/Modo del riego/ Modo de la luz/ Estado del riego/ Estado de la luz/ </p>
+<p>Dependiendo de si hay cambios en la DB del servidor, el <B>RESPONSE</B> sera como lo dicta la siguiente tabla:</p>
+
+
+<div class="table-responsive text-center" style="font-size: 16px;"></div>
+  <table class="table table-hover table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>CODIGO</th>
+        <th>SIGNIFICADO</th>
+        <th>RESPONSE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>0</td>
+        <td>No hay cambios en el control</td>
+        <td>[0]</td> 
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Modo Riego Request <span style="color: red; font-weight: bold;">!=</span> <b><a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank">Modo Riego DB </a></b></td>
+        <td>[1, <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>Modo Riego DB</b></a>] </td> 
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Modo Luz Request <span style="color: red; font-weight: bold;">!=</span> <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>Modo Luz DB</b></a></td>
+        <td>[2,  <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>Modo Luz DB</b></a>]</td> 
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="modo">modo 1:</span> Hay cambios en los intervalos de riego (<a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>riego.cambiosDB</b></a>  <span style="color: red; font-weight: bold;">!=</span>  0)</td>
+        <td>[3,  <a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_riego/" target="_blank"><b>/Timer_mode_riego</b></a> </td> 
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="modo">modo 1:</span> Hay cambios en los intervalos de la iluminacion (<a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>luz.cambiosDB</b></a>  <span style="color: red; font-weight: bold;">!=</span> 0)</td>
+        <td>[4,  <a href="https://agrower-299616.uc.r.appspot.com/admin/control/timer_mode_luz/" target="_blank"><b>/Timer_mode_luz</b></a></td> 
+      </tr>
+      <tr>
+        <td>5</td>
+        <td> <span class="modo">modo 3:</span> Hay cambios en los parametros (<a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>riego.changeparameters</b></a>  <span style="color: red; font-weight: bold;">!=</span> 0)</td>
+        <td>[5, <a href="https://agrower-299616.uc.r.appspot.com/admin/control/automatic_mode/" target="_blank"><b>/Automatic_mode</b></a>] </td> 
+      </tr>
+      <tr>
+        <td>6</td>
+        <td> <span class="modo">modo 2:</span> Hay cambios en el estado del riego (Estado riego request <span style="color: red; font-weight: bold;">!=</span> <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>riego.changeStatus</b></a>)</td>
+        <td>[6, <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>/riego.changeStatus</b></a>] </td> 
+      </tr>
+      <tr>
+        <td>7</td>
+        <td> <span class="modo">modo 2:</span> Hay cambios en el estado de la luz (Estado luz request <span style="color: red; font-weight: bold;">!=</span> <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>luz.changeStatus</b></a> </td>
+        <td>[6, <a href="https://agrower-299616.uc.r.appspot.com/admin/control/valuechange/" target="_blank"><b>/luz.changeStatus</b></a></td> 
+      </tr>
+    </tbody>
+  </table>
+  <h2>EJEMPLOS DEL FUNCIONAMIENTO</h2>
+  <P>...</P>
+  <p>mañana sigo con esto</p>
+  <P>...</P>
+  <P>...</P>
+</div>
+
+
+{% endblock %}

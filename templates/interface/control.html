@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+  <title>Control views</title>
+  <style>
+
+
+
+  </style>
+{% endblock %}
+
+{% block container %}
+
+<h2> <strong> CAMBIAR MODO </strong> </h2>
+
+
+
+
+
+
+<div style="display: inline;">
+  <form method="POST" class="post-form" style="display: inline;">
+    {% csrf_token %}
+    {{ formModeRiego.as_table  }}
+    <button name="riegomode" type="submit" class="save btn btn-dark btn-sm" style="display: inline">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+      </svg>
+      CHANGE
+    </button>
+  </form>
+</div>
+<br>
+
+<div style="display: inline;">
+  <form method="POST" class="post-form ">
+    {% csrf_token %}
+    {{ formModeLuz.as_table  }}
+    <button name="luzmode" type="submit" class="save btn btn-dark btn-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+      </svg>
+      CHANGE
+    </button>
+  </form>
+</div>
+
+
+<h2> <strong> MODO MANUAL </strong> </h2>
+
+
+
+
+<form method="POST" class="post-form ">
+  {% csrf_token %}
+  {{ formStatusRiego.as_table  }}
+  <button name="riegostatus" type="submit" class="save btn btn-dark btn-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+    </svg>
+    CHANGE
+  </button>
+</form>
+<form method="POST" class="post-form ">
+  {% csrf_token %}
+  {{ formStatusLuz.as_table }}
+  <button name="luzstatus" type="submit" class="save btn btn-dark btn-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+    </svg>
+    CHANGE
+  </button>
+</form>
+
+<h2> <strong>  MODO PROGRAMADO  </strong></h2>
+
+<h3>RIEGO: </h3>
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  {{ formAddTimesRiego.as_table  }}
+
+  <button name="addtimeriego" type="submit" class="save btn btn-dark btn-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+    ADD
+  </button>
+
+</form>
+<!--Despliega intervalos de tiempo del riego-->
+<div class="table-responsive text-center">
+  <table class="table table-hover  table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Hora encendido</th>
+        <th>Hora apagado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for registro in riego_timers_list %}
+      <tr>
+        <td>{{registro.encender_time}} </td>
+        <td>{{registro.apagar_time}} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<a href="{% url 'borrarIntervalosRiego'%}" target="_blank">
+  
+  <strong><button type="button" class="btn btn-dark btn-sm" style="color: #e57373;">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 20 20">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg>
+     <span style="font-family:'Fjalla One',serif; font-size: 0.9rem" >DELETE ALL</span>
+  </button></strong>
+</a>
+
+<a href="{% url 'enviar' pk='riego' change=1%}" target="_blank">
+  <button type="button" class="btn btn-dark btn-sm" style="color: #64b5f6;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 20 20">
+      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+    </svg>
+    <span style="font-family:'Fjalla One',serif; font-size: 0.9rem" >SEND</span>
+  </button>
+</a>
+<br>
+<hr>
+<!--Form to add times luz-->
+<h3>ILUMINACION:</h3>
+<form method="POST" class="post-form ">
+  {% csrf_token %}
+  {{ formAddTimesLuz.as_table  }}
+
+  <button name="addtimeluz" type="submit" class="save btn btn-dark btn-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+      <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+    ADD
+  </button>
+</form>
+
+<!--Despliega intervalos de tiempo dela luz-->
+<div class="table-responsive text-center">
+  <table class="table table-hover table-sm ">
+    <thead class="thead-dark">
+      <tr>
+        <th>Hora encendido</th>
+        <th>Hora apagado</th>
+      </tr>
+    </thead>
+    <tbody id="intervalos_iluminacion">
+      {% for registro in luz_timers_list %}
+      <tr>
+        <td>{{registro.encender_time}} </td>
+        <td>{{registro.apagar_time}} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<a href="{% url 'borrarIntervalosLuz'%}" target="_blank">
+  <strong><button type="button" class="btn btn-dark btn-sm" style="color: #e57373;">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 20 20">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+    </svg>
+     <span style="font-family:'Fjalla One',serif; font-size: 0.9rem" >DELETE ALL</span>
+  </button></strong>
+</a>
+<span> </span>
+<a href="{% url 'enviar' pk='luz' change=1%}" target="_blank">
+  <button type="button" class="btn btn-dark btn-sm" style="color: #64b5f6;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 20 20">
+      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+    </svg>
+    <span style="font-family:'Fjalla One',serif; font-size: 0.9rem" >SEND</span>
+  </button>
+</a>
+
+<h2> <strong> MODO AUTOMATICO </strong> </h2>
+
+<div id="control_manager">
+  <automatico :intervalos_automatico="intervalos_automatico"></automatico>
+</div>
+
+
+<script src="/static/js/control.js">
+
+</script>
+
+
+
+{% endblock %}
